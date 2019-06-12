@@ -69,16 +69,21 @@ let dy = 0
 
 body.addEventListener('keydown', event => {
 
-    if (event.key === 'ArrowRight'){
+    const isMovingRight = dx === 1 && dy === 0
+    const isMovingLeft = dx === -1 && dy === 0
+    const isMovingDown = dx === 0 && dy === 1
+    const isMovingUp = dx === 0 && dy === -1
+
+    if (event.key === 'ArrowRight' && !isMovingLeft){
         dx = 1
         dy = 0
-    } else if (event.key === 'ArrowLeft'){
+    } else if (event.key === 'ArrowLeft' && !isMovingRight){
         dx = -1
         dy = 0
-    } else if (event.key === 'ArrowUp'){
+    } else if (event.key === 'ArrowUp' && !isMovingDown){
         dx = 0
         dy = -1
-    } else if (event.key === 'ArrowDown'){
+    } else if (event.key === 'ArrowDown' && !isMovingUp){
         dx = 0
         dy = 1
     }
