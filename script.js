@@ -16,7 +16,9 @@ function drawRect(x,y,w,h,color = 'green'){
     ctx.fillRect(x, y, w, h)
 }
 
-const head = {
+drawRect(0, 0, HEX*20, HEX*20, '#eee')
+
+let head = {
     x: 4*HEX,
     y: 2*HEX
 }
@@ -27,7 +29,20 @@ const snake = [
     {x: 2*HEX, y: 2*HEX},
 ]
 
-drawRect(0, 0, HEX*20, HEX*20, '#eee')
-drawRect(head.x, head.y, HEX, HEX)
-drawRect(snake[1].x, snake[1].y, HEX, HEX)
-drawRect(snake[2].x, snake[2].y, HEX, HEX)
+
+snake.forEach(part =>
+    drawRect(part.x, part.y, HEX, HEX)
+    )
+
+head = snake[0]
+let lastPart = snake.pop()
+lastPart.x = head.x + HEX
+lastPart.y = head.y
+snake.unshift(lastPart)
+
+console.log(snake)
+
+drawRect(0, 0, 20*HEX, 20*HEX, '#eee')
+snake.forEach(part =>
+    drawRect(part.x, part.y, HEX, HEX)
+    )
