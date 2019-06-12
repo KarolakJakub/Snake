@@ -23,7 +23,7 @@ let head = {
     y: 2*HEX
 }
 
-const snake = [
+let snake = [
     head,
     {x: 3*HEX, y: 2*HEX},
     {x: 2*HEX, y: 2*HEX},
@@ -71,6 +71,12 @@ createFood()
 setInterval(() =>{
 
     moveSnake()
+
+    if (checkForCollision()) {
+
+        resetGame()
+
+    }
 
     cleanCanvas()
 
@@ -128,5 +134,33 @@ function createFood() {
         x,
         y
     }
+
+}
+
+function checkForCollision() {
+
+    const [head, ...tail] = snake
+    const selfEating = tail.some(part => 
+        part.x === head.x && part.y === head.y
+    )
+
+    const touchingWall = (head.x < 0 || head.y < 0 || head.x > 19 * HEX || head.y > 19*HEX)
+
+    return selfEating || touchingWall
+
+}
+
+function resetGame() {
+
+    snake = [
+        {x: 4*HEX, y: 2*HEX},
+        {x: 3*HEX, y: 2*HEX},
+        {x: 2*HEX, y: 2*HEX},
+    ]
+
+    dx = 1
+    dy = 0
+
+    createFood()
 
 }
