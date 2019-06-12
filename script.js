@@ -34,15 +34,53 @@ snake.forEach(part =>
     drawRect(part.x, part.y, HEX, HEX)
     )
 
-head = snake[0]
-let lastPart = snake.pop()
-lastPart.x = head.x + HEX
-lastPart.y = head.y
-snake.unshift(lastPart)
+function moveSnake(){
+    head = snake[0]
+    let lastPart = snake.pop()
+    lastPart.x = head.x + (dx*HEX)
+    lastPart.y = head.y + (dy*HEX)
+    snake.unshift(lastPart)
+}
 
-console.log(snake)
+function cleanCanvas(){
+    drawRect(0, 0, 20*HEX, 20*HEX, '#eee')
+}
 
-drawRect(0, 0, 20*HEX, 20*HEX, '#eee')
-snake.forEach(part =>
-    drawRect(part.x, part.y, HEX, HEX)
+function paintSnake(){
+    snake.forEach(part =>
+        drawRect(part.x, part.y, HEX, HEX)
     )
+}
+
+
+
+setInterval(() =>{
+
+    moveSnake()
+
+    cleanCanvas()
+
+    paintSnake()
+
+}, 200)
+
+let dx = 1
+let dy = 0
+
+body.addEventListener('keydown', event => {
+
+    if (event.key === 'ArrowRight'){
+        dx = 1
+        dy = 0
+    } else if (event.key === 'ArrowLeft'){
+        dx = -1
+        dy = 0
+    } else if (event.key === 'ArrowUp'){
+        dx = 0
+        dy = -1
+    } else if (event.key === 'ArrowDown'){
+        dx = 0
+        dy = 1
+    }
+    console.log(dx+' '+ dy)
+})
