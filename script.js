@@ -35,11 +35,19 @@ snake.forEach(part =>
     )
 
 function moveSnake(){
-    head = snake[0]
-    let lastPart = snake.pop()
-    lastPart.x = head.x + (dx*HEX)
-    lastPart.y = head.y + (dy*HEX)
-    snake.unshift(lastPart)
+
+    const head = {
+        x: snake[0].x + HEX * dx,
+        y: snake[0].y + HEX * dy
+    }
+
+    snake.unshift(head)
+
+    if (food.x === head.x && food.y === head.y){
+        createFood()
+    }else{
+        snake.pop()
+    }
 }
 
 function cleanCanvas(){
@@ -52,7 +60,13 @@ function paintSnake(){
     )
 }
 
+let food
 
+function paintFood() {
+    drawRect(food.x, food.y, HEX, HEX, 'red')
+}
+
+createFood()
 
 setInterval(() =>{
 
@@ -60,12 +74,16 @@ setInterval(() =>{
 
     cleanCanvas()
 
+    paintFood()
+
     paintSnake()
 
 }, 200)
 
 let dx = 1
 let dy = 0
+
+
 
 body.addEventListener('keydown', event => {
 
@@ -89,3 +107,26 @@ body.addEventListener('keydown', event => {
     }
     console.log(dx+' '+ dy)
 })
+
+function randomNumber(min, max) {
+    return Math.round((Math.random() * (max-min) + min) / HEX) * HEX;
+  }
+
+function createFood() {
+    const x = randomNumber(0, 600-HEX)
+    const y = randomNumber(0, 600-HEX)
+
+    const canDrawFood = !snake.some(part =>{
+        return part.x === x && part.y === y
+    })
+
+    if (!canDrawFood){
+        createFood()
+    }
+
+    food = {
+        x,
+        y
+    }
+
+}
