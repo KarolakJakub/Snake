@@ -29,6 +29,7 @@ let snake = [
     {x: 2*HEX, y: 2*HEX},
 ]
 
+let timeout = 300
 
 snake.forEach(part =>
     drawRect(part.x, part.y, HEX, HEX)
@@ -45,6 +46,7 @@ function moveSnake(){
 
     if (food.x === head.x && food.y === head.y){
         createFood()
+        loop()
     }else{
         snake.pop()
     }
@@ -61,6 +63,7 @@ function paintSnake(){
 }
 
 let food
+let intervalID
 
 function paintFood() {
     drawRect(food.x, food.y, HEX, HEX, 'red')
@@ -68,12 +71,21 @@ function paintFood() {
 
 createFood()
 
-setInterval(() =>{
+function loop (){
+    
+    if (intervalID !== undefined){
+        clearInterval(intervalID)
+        timeout -= 50
+        console.log(timeout)
+    }
+
+    intervalID = setInterval(() =>{
 
     moveSnake()
 
     if (checkForCollision()) {
 
+        intervalID = 300
         resetGame()
 
     }
@@ -84,8 +96,9 @@ setInterval(() =>{
 
     paintSnake()
 
-}, 200)
+}, timeout)}
 
+loop()
 let dx = 1
 let dy = 0
 
